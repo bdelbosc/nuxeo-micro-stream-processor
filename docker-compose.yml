@@ -40,7 +40,7 @@ services:
       - ./kafkahq/kafkahq.conf:/app/application.conf:ro
   producer:
     # image: msp/producer:latest
-    build: 
+    build:
       context: nuxeo-producer
       dockerfile: src/main/docker/Dockerfile-JDK
     depends_on:
@@ -61,6 +61,7 @@ services:
       dockerfile: src/main/docker/Dockerfile-JDK
     depends_on:
       - kafka
+      - producer
     environment:
       KAFKA_ENABLED: "true"
       KAFKA_URL: kafka:9092
