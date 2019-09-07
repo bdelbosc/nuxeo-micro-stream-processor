@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <component name="org.nuxeo.micro.log.cq.contrib">
   <extension point="logConfig" target="org.nuxeo.runtime.stream.service">
-    <logConfig name="default">
-      <log name="source" size="1" />
-    </logConfig>
+    <logConfig name="default" />
   </extension>
 </component>

@@ -1,4 +1,4 @@
 scannerClass: io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner
 resourcePackages:
-  - org.nuxeo.micro.service
+  - org.nuxeo.micro
 prettyPrint: true

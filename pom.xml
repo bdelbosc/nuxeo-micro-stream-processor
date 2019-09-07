@@ -7,8 +7,8 @@
   <packaging>pom</packaging>
   <modules>
     <module>nuxeo-helidon</module>
-    <module>nuxeo-producer</module>
     <module>nuxeo-processor</module>
+    <module>nuxeo-producer</module>
   </modules>
   <properties>
     <!-- Environment -->

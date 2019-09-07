@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<component name="org.nuxeo.micro.stream.processor.contrib">
+<component name="org.nuxeo.micro.stream.producer.xx.contrib">
 
   <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
 
-    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.processor.MyProcessor" logConfig="default">
+    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.processor.MyProcessor" logConfig="default"
+      defaultConcurrency="0">
       <stream name="source" partitions="4" codec="avro" />
     </streamProcessor>
   </extension>

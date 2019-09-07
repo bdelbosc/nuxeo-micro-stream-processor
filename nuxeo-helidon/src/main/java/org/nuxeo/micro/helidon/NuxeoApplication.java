@@ -91,7 +91,6 @@ public class NuxeoApplication {
             if (Boolean.parseBoolean(Framework.getProperty("kafka.enabled"))) {
                 installComponents("OSGI-INF/default-kafka-config.xml");
             } else {
-                System.out.println("CQ install");
                 installComponents("OSGI-INF/default-chronicle-config.xml");
             }
 

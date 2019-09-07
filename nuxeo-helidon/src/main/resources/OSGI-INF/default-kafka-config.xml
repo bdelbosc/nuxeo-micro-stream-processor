@@ -20,7 +20,7 @@
   <extension target="org.nuxeo.runtime.stream.service" point="logConfig">
     <logConfig name="default" type="kafka">
       <option name="kafkaConfig">default</option>
-      <log name="source" size="2" />
     </logConfig>
   </extension>
+
 </component>

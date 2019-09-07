@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.nuxeo.lib.stream.log.LogManager;
 import org.nuxeo.micro.helidon.AbstractWebServerTest;
+import org.nuxeo.micro.helidon.junit.Deploy;
 import org.nuxeo.micro.helidon.junit.NuxeoHelidonTest;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.stream.StreamService;
@@ -14,6 +15,7 @@ import org.nuxeo.runtime.stream.StreamService;
 import io.restassured.http.ContentType;
 
 @NuxeoHelidonTest
+@Deploy("OSGI-INF/stream-config.xml")
 public class TestProducerEndPoint extends AbstractWebServerTest {
 
     @Override
@@ -28,8 +30,16 @@ public class TestProducerEndPoint extends AbstractWebServerTest {
                .when()
                .post("/producer")
                .then()
-               .statusCode(200)
-               .body(containsString("source"));
+               .statusCode(500);
+
+        given().contentType(ContentType.JSON)
+                .body("{\"key\": \"1234\"}").queryParam("debug", "true")
+                .when()
+                .post("/producer")
+                .then()
+                .statusCode(200)
+                .body(containsString("source"));
+
     }
 
     @Test

@@ -9,6 +9,6 @@ public class Main {
      * @param args command line arguments.
      */
     public static void main(final String[] args) {
-        NuxeoWebServer.empty().start(producerEndpoint.class);
+        NuxeoWebServer.withComponents("OSGI-INF/stream-config.xml").start(producerEndpoint.class);
     }
 }
