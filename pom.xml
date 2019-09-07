@@ -7,8 +7,8 @@
   <packaging>pom</packaging>
   <modules>
     <module>nuxeo-helidon</module>
-    <!--module>nuxeo-producer</module>
-    <module>nuxeo-consumer</module-->
+    <module>nuxeo-producer</module>
+    <module>nuxeo-processor</module>
   </modules>
   <properties>
     <!-- Environment -->
@@ -75,12 +75,24 @@
       <!-- Project's module -->
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
+        <artifactId>nuxeo-helidon</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.micro</groupId>
+        <artifactId>nuxeo-helidon</artifactId>
+        <version>${project.version}</version>
+        <type>test-jar</type>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.nuxeo.micro</groupId>
         <artifactId>nuxeo-producer</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
-        <artifactId>nuxeo-consumer</artifactId>
+        <artifactId>nuxeo-processor</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!-- Nuxeo Additional Log4j apdaters -->

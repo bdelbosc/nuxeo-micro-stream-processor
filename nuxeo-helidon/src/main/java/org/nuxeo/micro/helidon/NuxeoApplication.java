@@ -91,11 +91,12 @@ public class NuxeoApplication {
             if (Boolean.parseBoolean(Framework.getProperty("kafka.enabled"))) {
                 installComponents("OSGI-INF/default-kafka-config.xml");
             } else {
+                System.out.println("CQ install");
                 installComponents("OSGI-INF/default-chronicle-config.xml");
             }
 
             // Install local bundles
-            // installComponents("OSGI-INF/common-services-contrib.xml");
+            // installComponents("OSGI-INF/default-stream-config.xml");
 
             // Install delayed bundles
             if (delayedBundles != null) {

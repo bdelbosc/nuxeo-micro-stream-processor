@@ -1,5 +1,6 @@
 .tmp
 target
+data
 .classpath
 .project
 npm-debug.log

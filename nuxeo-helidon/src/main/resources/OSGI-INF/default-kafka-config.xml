@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<component name="org.nuxeo.micro.kafka.config">
+<component name="org.nuxeo.micro.log.kafka.config">
 
   <extension point="kafkaConfig" target="org.nuxeo.runtime.stream.kafka.service">
     <kafkaConfig name="default" topicPrefix="nuxeo-" zkServers="${zk.url}">
@@ -20,6 +20,7 @@
   <extension target="org.nuxeo.runtime.stream.service" point="logConfig">
     <logConfig name="default" type="kafka">
       <option name="kafkaConfig">default</option>
+      <log name="source" size="2" />
     </logConfig>
   </extension>
 </component>
