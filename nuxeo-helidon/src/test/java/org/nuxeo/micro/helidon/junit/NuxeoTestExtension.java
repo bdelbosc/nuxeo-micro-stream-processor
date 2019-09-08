@@ -43,7 +43,7 @@ public class NuxeoTestExtension implements BeforeAllCallback, BeforeEachCallback
     }
 
     @Override
-    public void afterAll(ExtensionContext extensionContext) throws Exception {
+    public void afterAll(ExtensionContext extensionContext) {
         APP.onStop();
         APP = null;
     }

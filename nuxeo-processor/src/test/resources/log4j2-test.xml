@@ -6,13 +6,13 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="org.nuxeo.lib.stream" level="trace">
+    <Logger name="org.nuxeo.lib.stream" level="info">
       <AppenderRef ref="Console" />
     </Logger>
-    <Logger name="org.nuxeo.runtime.stream" level="trace">
+    <Logger name="org.nuxeo.runtime.stream" level="info">
       <AppenderRef ref="Console" />
     </Logger>
-    <Root level="TRACE">
+    <Root level="INFO">
       <AppenderRef ref="Console" />
     </Root>
   </Loggers>

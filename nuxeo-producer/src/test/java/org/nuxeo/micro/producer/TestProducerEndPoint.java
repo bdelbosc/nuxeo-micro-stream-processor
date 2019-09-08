@@ -33,22 +33,19 @@ public class TestProducerEndPoint extends AbstractWebServerTest {
                .statusCode(500);
 
         given().contentType(ContentType.JSON)
-                .body("{\"key\": \"1234\"}").queryParam("debug", "true")
-                .when()
-                .post("/producer")
-                .then()
-                .statusCode(200)
-                .body(containsString("source"));
+               .body("{\"key\": \"1234\"}")
+               .queryParam("debug", "true")
+               .when()
+               .post("/producer")
+               .then()
+               .statusCode(200)
+               .body(containsString("source"));
 
     }
 
     @Test
     public void testSwaggerEndpoint() {
-        given().when()
-               .get("/openapi.yaml")
-               .then()
-               .statusCode(200)
-               .body(containsString("Produce something"));
+        given().when().get("/openapi.yaml").then().statusCode(200).body(containsString("Produce something"));
     }
 
     /**

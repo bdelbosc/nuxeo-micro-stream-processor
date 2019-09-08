@@ -8,14 +8,14 @@
  */
 package org.nuxeo.micro.helidon;
 
-import org.eclipse.microprofile.health.Health;
 import org.eclipse.microprofile.health.HealthCheck;
 import org.eclipse.microprofile.health.HealthCheckResponse;
+import org.eclipse.microprofile.health.Liveness;
 
 /**
  * Endpoint for the liveness HTTP request.
  */
-@Health
+@Liveness
 public class NuxeoHealthCheck implements HealthCheck {
 
     @Override

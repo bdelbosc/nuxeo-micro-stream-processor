@@ -18,7 +18,7 @@
  */
 package org.nuxeo.micro.processor;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 import org.nuxeo.lib.stream.computation.AbstractComputation;
@@ -34,7 +34,7 @@ public class MyProcessor implements StreamProcessorTopology {
     @Override
     public Topology getTopology(Map<String, String> map) {
         return Topology.builder()
-                       .addComputation(() -> new MyComputation("myComputation"), Arrays.asList("i1:source"))
+                       .addComputation(() -> new MyComputation("myComputation"), Collections.singletonList("i1:source"))
                        .build();
 
     }

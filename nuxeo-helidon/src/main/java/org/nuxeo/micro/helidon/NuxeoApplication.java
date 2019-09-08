@@ -59,9 +59,9 @@ public class NuxeoApplication {
 
     protected Map<String, BundleFile> bundles;
 
-    protected List<String> delayedBundles = new ArrayList<>();
+    protected final List<String> delayedBundles = new ArrayList<>();
 
-    protected List<URL> delayedComponents = new ArrayList<>();
+    protected final List<URL> delayedComponents = new ArrayList<>();
 
     private StandaloneBundleLoader bundleLoader;
 
@@ -98,14 +98,14 @@ public class NuxeoApplication {
             // installComponents("OSGI-INF/default-stream-config.xml");
 
             // Install delayed bundles
-            if (delayedBundles != null) {
+            if (!delayedBundles.isEmpty()) {
                 for (String delayedBundle : delayedBundles) {
                     installBundle(delayedBundle);
                 }
             }
 
             // Install delayed components
-            if (delayedComponents != null) {
+            if (!delayedComponents.isEmpty()) {
                 installComponents(delayedComponents);
             }
 

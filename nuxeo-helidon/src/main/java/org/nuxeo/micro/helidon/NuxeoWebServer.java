@@ -40,7 +40,7 @@ public interface NuxeoWebServer extends WebServer {
 
         private static final Log log = LogFactory.getLog(NuxeoWebServer.class);
 
-        protected NuxeoApplication app;
+        protected final NuxeoApplication app;
 
         public Builder() {
             this(new NuxeoApplication());
@@ -102,7 +102,8 @@ public interface NuxeoWebServer extends WebServer {
         private static Routing createRouting(Class<?>... resources) {
             MetricsSupport metrics = MetricsSupport.create();
             HealthSupport health = HealthSupport.builder()
-                                                .add(HealthChecks.healthChecks()) // Adds a convenient set of checks
+                                                .addLiveness(HealthChecks.healthChecks()) // Adds a convenient set of
+                                                                                          // checks
                                                 .build();
 
             JerseySupport.Builder jBuilder = JerseySupport.builder();

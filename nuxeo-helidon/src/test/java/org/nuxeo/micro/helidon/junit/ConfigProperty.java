@@ -25,15 +25,11 @@ public @interface ConfigProperty {
 
     /**
      * Value to inject
-     *
-     * @return
      */
     String value();
 
     /**
      * Config Property key
-     *
-     * @return
      */
     String key();
 }

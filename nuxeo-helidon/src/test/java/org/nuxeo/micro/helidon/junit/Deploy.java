@@ -24,8 +24,6 @@ import java.lang.annotation.Target;
 public @interface Deploy {
     /**
      * Contribution path to deploy
-     *
-     * @return
      */
     String value();
 }
