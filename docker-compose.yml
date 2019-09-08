@@ -44,10 +44,9 @@ services:
       - kafka
     volumes:
       - ./kafkahq/kafkahq.conf:/app/application.conf:ro
-  producer:
-    # image: msp/producer:latest
+  rest:
     build:
-      context: nuxeo-producer
+      context: acme-rest
       dockerfile: src/main/docker/Dockerfile-JDK
     depends_on:
       - kafka
@@ -66,13 +65,12 @@ services:
       - "traefik.backend.healthcheck.port=8080"
       - "traefik.backend.healthcheck.interval=10s"
   processor:
-    # image: msp/processor:latest
     build:
-      context: nuxeo-processor
+      context: acme-processor
       dockerfile: src/main/docker/Dockerfile-JDK
     depends_on:
       - kafka
-      - producer
+      - rest
       - redis
     environment:
       KAFKA_ENABLED: "true"

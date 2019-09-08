@@ -16,36 +16,36 @@ import io.restassured.http.ContentType;
 
 @NuxeoHelidonTest
 @Deploy("OSGI-INF/stream-config.xml")
-public class TestProducerEndPoint extends AbstractWebServerTest {
+public class TestEndPoints extends AbstractWebServerTest {
 
     @Override
     public Class<?>[] getResources() {
-        return new Class[] { ProducerEndPoint.class };
+        return new Class[] { BatchEndPoint.class };
     }
 
     @Test
-    public void iCanPostToProducerEndPoint() {
+    public void iCanUseBatchEndPoint() {
+        given().when().get("/batches/foo").then().statusCode(404);
         given().contentType(ContentType.JSON)
-               .body("{\"I like\": \"json\"}")
                .when()
-               .post("/producer")
+               .post("/batches")
                .then()
-               .statusCode(500);
+               .statusCode(200)
+               .body(containsString("created"));
 
         given().contentType(ContentType.JSON)
                .body("{\"key\": \"1234\"}")
                .queryParam("debug", "true")
                .when()
-               .post("/producer")
+               .post("/batches/batch-id/append")
                .then()
                .statusCode(200)
                .body(containsString("source"));
-
     }
 
     @Test
     public void testSwaggerEndpoint() {
-        given().when().get("/openapi.yaml").then().statusCode(200).body(containsString("Produce something"));
+        given().when().get("/openapi.yaml").then().statusCode(200).body(containsString("ACME Batch endpoint"));
     }
 
     /**

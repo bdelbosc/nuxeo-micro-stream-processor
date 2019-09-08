@@ -3,7 +3,7 @@
 
   <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
     <!-- define the processor without runner, in order to init source streams -->
-    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.acme.processor.MyProcessor" logConfig="default"
+    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.acme.processor.AcmeProcessor" logConfig="default"
       defaultConcurrency="0">
       <stream name="source" partitions="20" codec="avro" />
     </streamProcessor>

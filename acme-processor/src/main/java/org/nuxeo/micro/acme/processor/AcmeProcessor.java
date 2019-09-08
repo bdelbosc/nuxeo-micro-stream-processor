@@ -27,7 +27,7 @@ import org.nuxeo.lib.stream.computation.Record;
 import org.nuxeo.lib.stream.computation.Topology;
 import org.nuxeo.runtime.stream.StreamProcessorTopology;
 
-public class MyProcessor implements StreamProcessorTopology {
+public class AcmeProcessor implements StreamProcessorTopology {
     @Override
     public Topology getTopology(Map<String, String> map) {
         return Topology.builder()

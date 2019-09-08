@@ -16,46 +16,55 @@
  * Contributors:
  *     bdelbosc
  */
-package org.nuxeo.micro.acme.rest;
+package org.nuxeo.micro.acme;
 
-import org.nuxeo.lib.stream.log.LogOffset;
-
-public class ProducerResponse {
+public class Batch {
     protected String id;
 
-    protected String stream;
+    protected String status;
 
-    protected Integer partition;
+    protected Integer processed;
 
-    protected Long offset;
+    protected Integer total;
 
-    public ProducerResponse(LogOffset offset) {
-        this.id = offset.toString();
-        this.stream = offset.partition().name();
-        this.partition = offset.partition().partition();
-        this.offset = offset.offset();
+    public Batch() {
     }
 
     public String getId() {
         return id;
     }
 
-    public String getStream() {
-        return stream;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public Integer getPartition() {
-        return partition;
+    public String getStatus() {
+        return status;
     }
 
-    public Long getOffset() {
-        return offset;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(Integer processed) {
+        this.processed = processed;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 
     @Override
     public String toString() {
-        return String.format("{\"id\":\"%s\", \"stream\": \"%s\", \"partition\": %d, \"offset\": %d}", id, stream,
-                partition, offset);
+        return String.format("{\"id\":\"%s\", \"status\": \"%s\", \"total\": %d, \"processed\": %d}", id, status, total,
+                processed);
     }
-
 }

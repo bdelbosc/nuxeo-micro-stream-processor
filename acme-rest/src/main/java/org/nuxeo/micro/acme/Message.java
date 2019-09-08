@@ -16,42 +16,76 @@
  * Contributors:
  *     bdelbosc
  */
-package org.nuxeo.micro.acme.rest;
+package org.nuxeo.micro.acme;
 
-public class ProducerRequest {
-    protected String run;
+import java.io.Serializable;
 
-    protected String key;
+import org.apache.avro.reflect.Nullable;
 
-    protected Integer duration;
+public class Message implements Serializable {
 
-    protected Integer failAfter;
+    private static final long serialVersionUID = 20190908L;
 
-    protected String payload;
+    private String batchId;
+
+    private String key;
+
+    public Message() {
+        // Empty constructor needed
+    }
+
+    @Nullable
+    private Integer duration;
+
+    @Nullable
+    private Integer failAfter;
+
+    @Nullable
+    private String payload;
+
+    public String getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(String batchId) {
+        this.batchId = batchId;
+    }
 
     public String getKey() {
         return key;
     }
 
-    public String getRun() {
-        return run;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public Integer getDuration() {
         return duration;
     }
 
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
+
     public Integer getFailAfter() {
         return failAfter;
+    }
+
+    public void setFailAfter(Integer failAfter) {
+        this.failAfter = failAfter;
     }
 
     public String getPayload() {
         return payload;
     }
 
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
+
     @Override
     public String toString() {
-        return "ProducerRequest{" + "run='" + run + '\'' + ", key='" + key + '\'' + ", duration=" + duration
+        return "Message{" + "batchId='" + batchId + '\'' + ", key='" + key + '\'' + ", duration=" + duration
                 + ", failAfter=" + failAfter + ", payload='" + payload + '\'' + '}';
     }
 }
