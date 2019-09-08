@@ -1,5 +1,11 @@
 version: "3.5"
 services:
+  redis:
+    image: redis:5.0-alpine
+    container_name: redis
+    hostname: redis
+    volumes:
+      - ./data/redis:/data:rw
   zookeeper:
     image: zookeeper:3.4.13
     container_name: zookeeper
@@ -45,9 +51,14 @@ services:
       dockerfile: src/main/docker/Dockerfile-JDK
     depends_on:
       - kafka
+      - redis
     environment:
       KAFKA_ENABLED: "true"
-      KAFKA_URL: kafka:9092
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
     labels:
       - "traefik.http.frontend.rule=Host:producer.docker.localhost"
       - "traefik.http.port=8080"
@@ -62,9 +73,14 @@ services:
     depends_on:
       - kafka
       - producer
+      - redis
     environment:
       KAFKA_ENABLED: "true"
-      KAFKA_URL: kafka:9092
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
     labels:
       - "traefik.http.frontend.rule=Host:processor.docker.localhost"
       - "traefik.http.port=8080"

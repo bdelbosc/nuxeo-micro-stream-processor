@@ -20,6 +20,7 @@ public class NuxeoHealthCheck implements HealthCheck {
 
     @Override
     public HealthCheckResponse call() {
+        // TODO: check access to redis and stream services
         return HealthCheckResponse.named("Health check nuxeo container").up().build();
     }
 }

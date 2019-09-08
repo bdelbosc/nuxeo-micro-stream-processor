@@ -87,12 +87,16 @@ public class NuxeoApplication {
 
             // Manual install bundles
             installBundle("org.nuxeo.runtime.stream");
+            installBundle("org.nuxeo.runtime.kv");
+            installBundle("org.nuxeo.runtime.redis");
+            installBundle("org.nuxeo.ecm.core.redis");
 
             if (Boolean.parseBoolean(Framework.getProperty("kafka.enabled"))) {
                 installComponents("OSGI-INF/default-kafka-config.xml");
             } else {
                 installComponents("OSGI-INF/default-chronicle-config.xml");
             }
+            installComponents("OSGI-INF/default-redis-config.xml");
 
             // Install local bundles
             // installComponents("OSGI-INF/default-stream-config.xml");
@@ -144,8 +148,8 @@ public class NuxeoApplication {
 
         initUrls();
 
-        runtime = new HelidonRuntime();
         bundleLoader = new StandaloneBundleLoader(new OSGiAdapter(env.getHome()), this.getClass().getClassLoader());
+        runtime = new HelidonRuntime(this);
 
         Framework.initialize(runtime);
     }
@@ -184,6 +188,7 @@ public class NuxeoApplication {
                 continue;
             }
             String symbolicName = readSymbolicName(bundleFile);
+            System.out.println(bundleFile + " " + symbolicName);
             if (symbolicName != null) {
                 log.debug(String.format("Bundle '%s' has URL %s", symbolicName, url));
                 bundles.put(symbolicName, bundleFile);
@@ -205,8 +210,8 @@ public class NuxeoApplication {
         if (name == null) {
             return null;
         }
-        if (StringUtils.isBlank(attrs.getValue("Nuxeo-Component"))) {
-            // Ignore bundle without Nuxeo Components
+        if (StringUtils.isBlank(attrs.getValue("Nuxeo-Component")) && !name.startsWith("org.nuxeo")) {
+            // Ignore non Nuxeo components
             return null;
         }
         String[] sp = name.split(";", 2);
@@ -219,8 +224,11 @@ public class NuxeoApplication {
             delayedBundles.add(name);
             return;
         }
+        Bundle bundle = getBundle(name);
+        loadComponents(bundle);
+    }
 
-        // install only if not yet installed
+    public Bundle getBundle(String name) throws Exception {
         Bundle bundle = bundleLoader.getOSGi().getRegistry().getBundle(name);
         if (bundle == null) {
             BundleFile bundleFile = lookupBundle(name);
@@ -230,8 +238,7 @@ public class NuxeoApplication {
         } else {
             log.info(String.format("A bundle with name %s has been found. Deploy is ignored.", name));
         }
-
-        loadComponents(bundle);
+        return bundle;
     }
 
     public void installComponents(String... locations) throws Exception {
@@ -288,4 +295,5 @@ public class NuxeoApplication {
             }
         }
     }
+
 }

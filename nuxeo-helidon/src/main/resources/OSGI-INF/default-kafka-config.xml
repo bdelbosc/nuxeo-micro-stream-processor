@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<component name="org.nuxeo.micro.log.kafka.config">
+<component name="org.nuxeo.micro.stream.kafka.config">
 
   <extension point="kafkaConfig" target="org.nuxeo.runtime.stream.kafka.service">
-    <kafkaConfig name="default" topicPrefix="nuxeo-" zkServers="${zk.url}">
+    <kafkaConfig name="default" topicPrefix="${kafka.prefix}">
       <producer>
         <property name="bootstrap.servers">${kafka.url}</property>
       </producer>

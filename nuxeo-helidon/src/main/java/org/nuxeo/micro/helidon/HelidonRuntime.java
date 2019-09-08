@@ -13,11 +13,25 @@ package org.nuxeo.micro.helidon;
 import org.nuxeo.common.Environment;
 import org.nuxeo.common.codec.CryptoProperties;
 import org.nuxeo.runtime.util.SimpleRuntime;
+import org.osgi.framework.Bundle;
 
 public class HelidonRuntime extends SimpleRuntime {
 
-    public HelidonRuntime() {
+    private final NuxeoApplication app;
+
+    public HelidonRuntime(NuxeoApplication app) {
         super();
         this.properties = (CryptoProperties) Environment.getDefault().getProperties();
+        this.app = app;
+    }
+
+    @Override
+    public Bundle getBundle(String bundleName) {
+        // some module need this to access their resources
+        try {
+            return app.getBundle(bundleName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

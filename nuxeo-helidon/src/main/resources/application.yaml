@@ -26,3 +26,8 @@ org:
   nuxeo:
     runtime:
       redirectJUL: true
+
+redis:
+  port: 6379
+  host: localhost
+  prefix: "test:msp:"

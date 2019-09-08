@@ -173,6 +173,18 @@
       <artifactId>nuxeo-runtime-osgi</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-kv</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.runtime</groupId>
+      <artifactId>nuxeo-runtime-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.nuxeo.ecm.core</groupId>
+      <artifactId>nuxeo-core-redis</artifactId>
+    </dependency>
+    <dependency>
       <groupId>io.github.lukehutch</groupId>
       <artifactId>fast-classpath-scanner</artifactId>
     </dependency>

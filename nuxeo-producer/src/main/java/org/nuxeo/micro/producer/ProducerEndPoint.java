@@ -27,6 +27,8 @@ import org.nuxeo.lib.stream.computation.Record;
 import org.nuxeo.lib.stream.computation.StreamManager;
 import org.nuxeo.lib.stream.log.LogOffset;
 import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.kv.KeyValueService;
+import org.nuxeo.runtime.kv.KeyValueStore;
 import org.nuxeo.runtime.stream.StreamService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,7 +65,15 @@ public class ProducerEndPoint {
         ProducerRequest request = getRequest(json, debug);
         Record record = getRecord(request, debug);
         ProducerResponse response = appendToStream("source", record, debug);
+        useKvStore(response);
         return Response.ok().entity(response.toString()).build();
+    }
+
+    protected void useKvStore(ProducerResponse response) {
+        KeyValueService service = Framework.getService(KeyValueService.class);
+        KeyValueStore kv = service.getKeyValueStore("default");
+        kv.put(response.getId(), response.toString());
+        System.out.println("Save in kv " + response.getId());
     }
 
     protected Record getRecord(ProducerRequest request, boolean debug) {
