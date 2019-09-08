@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.micro.acme.rest.stream.contrib">
+
+  <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
+    <!-- define the processor without runner, in order to init source streams -->
+    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.acme.processor.MyProcessor" logConfig="default"
+      defaultConcurrency="0">
+      <stream name="source" partitions="20" codec="avro" />
+    </streamProcessor>
+  </extension>
+
+</component>

@@ -6,9 +6,9 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-    <module>nuxeo-helidon</module>
-    <module>nuxeo-processor</module>
-    <module>nuxeo-producer</module>
+    <module>nuxeo-micro</module>
+    <module>acme-rest</module>
+    <module>acme-processor</module>
   </modules>
   <properties>
     <!-- Environment -->
@@ -75,24 +75,24 @@
       <!-- Project's module -->
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
-        <artifactId>nuxeo-helidon</artifactId>
+        <artifactId>nuxeo-micro</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
-        <artifactId>nuxeo-helidon</artifactId>
+        <artifactId>nuxeo-micro</artifactId>
         <version>${project.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
-        <artifactId>nuxeo-producer</artifactId>
+        <artifactId>acme-producer</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.nuxeo.micro</groupId>
-        <artifactId>nuxeo-processor</artifactId>
+        <artifactId>acme-processor</artifactId>
         <version>${project.version}</version>
       </dependency>
       <!-- Nuxeo Additional Log4j apdaters -->
