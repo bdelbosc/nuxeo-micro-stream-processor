@@ -236,13 +236,13 @@ public class NuxeoApplication {
 
     public void installComponents(String... locations) throws Exception {
         ClassLoader ccl = Thread.currentThread().getContextClassLoader();
-        List<URL> urls = Arrays.stream(locations).map(ccl::getResource).collect(Collectors.toList());
+        List<URL> localUrls = Arrays.stream(locations).map(ccl::getResource).collect(Collectors.toList());
 
-        List<URL> nulls = urls.stream().filter(Objects::isNull).collect(Collectors.toList());
+        List<URL> nulls = localUrls.stream().filter(Objects::isNull).collect(Collectors.toList());
         if (!nulls.isEmpty()) {
             throw new IllegalArgumentException("Missing resources found in: " + StringUtils.join(locations, ", "));
         }
-        installComponents(urls);
+        installComponents(localUrls);
     }
 
     public void installComponents(List<URL> urls) throws IOException {

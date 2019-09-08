@@ -20,7 +20,7 @@ public class TestProducerEndPoint extends AbstractWebServerTest {
 
     @Override
     public Class<?>[] getResources() {
-        return new Class[] { producerEndpoint.class };
+        return new Class[] { ProducerEndPoint.class };
     }
 
     @Test

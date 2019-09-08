@@ -45,7 +45,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
  */
 @OpenAPIDefinition(info = @Info(title = "Producer End Point", version = "1.0", description = "Nuxeo Producer Endpoint", contact = @Contact(url = "https://nuxeo.com")))
 @Path("/producer")
-public class producerEndpoint {
+public class ProducerEndPoint {
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 

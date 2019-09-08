@@ -38,7 +38,7 @@ public interface NuxeoWebServer extends WebServer {
 
     final class Builder {
 
-        private static final Log log = LogFactory.getLog(NuxeoWebServer.class);
+        private static final Log log = LogFactory.getLog(NuxeoWebServer.Builder.class);
 
         protected final NuxeoApplication app;
 

@@ -10,6 +10,8 @@
 
 package org.nuxeo.micro.helidon;
 
+import java.util.Objects;
+
 import org.nuxeo.common.codec.Crypto;
 import org.nuxeo.common.codec.CryptoProperties;
 
@@ -49,5 +51,22 @@ public class Properties extends CryptoProperties {
 
     public Config getObject(String key) {
         return getConfig().get(key);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        if (!super.equals(o))
+            return false;
+        Properties that = (Properties) o;
+        return Objects.equals(config, that.config);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), config);
     }
 }
