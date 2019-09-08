@@ -16,13 +16,13 @@
  * Contributors:
  *     bdelbosc
  */
-package org.nuxeo.micro.acme;
+package org.nuxeo.micro.acme.message;
 
 import java.io.Serializable;
 
 import org.apache.avro.reflect.Nullable;
 
-public class Message implements Serializable {
+public class AcmeMessage implements Serializable {
 
     private static final long serialVersionUID = 20190908L;
 
@@ -30,7 +30,7 @@ public class Message implements Serializable {
 
     private String key;
 
-    public Message() {
+    public AcmeMessage() {
         // Empty constructor needed
     }
 
@@ -85,7 +85,7 @@ public class Message implements Serializable {
 
     @Override
     public String toString() {
-        return "Message{" + "batchId='" + batchId + '\'' + ", key='" + key + '\'' + ", duration=" + duration
+        return "AcmeMessage{" + "batchId='" + batchId + '\'' + ", key='" + key + '\'' + ", duration=" + duration
                 + ", failAfter=" + failAfter + ", payload='" + payload + '\'' + '}';
     }
 }

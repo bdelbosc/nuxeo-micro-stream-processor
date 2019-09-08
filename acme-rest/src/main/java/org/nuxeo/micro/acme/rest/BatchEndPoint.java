@@ -19,11 +19,10 @@ import org.nuxeo.lib.stream.computation.Record;
 import org.nuxeo.lib.stream.computation.StreamManager;
 import org.nuxeo.lib.stream.log.LogOffset;
 import org.nuxeo.micro.acme.Batch;
-import org.nuxeo.micro.acme.Message;
+import org.nuxeo.micro.acme.BatchStorage;
+import org.nuxeo.micro.acme.message.AcmeMessage;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.codec.CodecService;
-import org.nuxeo.runtime.kv.KeyValueService;
-import org.nuxeo.runtime.kv.KeyValueStore;
 import org.nuxeo.runtime.stream.StreamService;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,31 +44,26 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 public class BatchEndPoint {
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private Codec<Message> codec;
+    private Codec<AcmeMessage> codec;
+
+    private BatchStorage batchStorage;
 
     @GET
-    @Path("{id: [a-zA-Z][a-zA-Z_0-9]+}")
+    @Path("{id: [a-zA-Z_0-9\\-]+}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getBatchById(@PathParam("id") String id) {
-        String ret = getBatchFromKv(id);
+        String ret = getBatchStorage().getAsJson(id);
         if (ret == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
         return Response.ok().entity(ret).build();
     }
 
-    private String getBatchFromKv(String id) {
-        KeyValueStore kv = getKeyValueStore();
-        byte[] val = kv.get(id);
-        if (val != null && val.length > 0) {
-            return new String(val);
+    private BatchStorage getBatchStorage() {
+        if (batchStorage == null) {
+            batchStorage = new BatchStorage();
         }
-        return null;
-    }
-
-    private KeyValueStore getKeyValueStore() {
-        KeyValueService service = Framework.getService(KeyValueService.class);
-        return service.getKeyValueStore("default");
+        return batchStorage;
     }
 
     @POST
@@ -80,13 +74,8 @@ public class BatchEndPoint {
         ret.setId(UUID.randomUUID().toString());
         ret.setTotal(total);
         ret.setStatus("created");
-        storeBatchToKv(ret);
+        getBatchStorage().save(ret);
         return Response.ok().entity(ret.toString()).build();
-    }
-
-    private void storeBatchToKv(Batch batch) {
-        KeyValueStore kv = getKeyValueStore();
-        kv.put(batch.getId(), batch.toString());
     }
 
     @Operation(summary = "Append to a batch", requestBody = @RequestBody(description = "The Url payload", required = true, content = {
@@ -96,7 +85,7 @@ public class BatchEndPoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id: [a-zA-Z][a-zA-Z_0-9\\-]+}/append")
+    @Path("{id: [a-zA-Z_0-9\\-]+}/append")
     public Response appendToBatch(String json, @PathParam("id") String id,
             @QueryParam("debug") @DefaultValue("false") String debugStr) throws IOException {
         boolean debug = "true".equals(debugStr);
@@ -107,7 +96,7 @@ public class BatchEndPoint {
     }
 
     protected Record getRecord(BatchAppendRequest request, String batchId, boolean debug) {
-        Message message = getMessageFromRequest(request, batchId);
+        AcmeMessage message = getMessageFromRequest(request, batchId);
         Record record = Record.of(request.getKey(), getMessageCodec().encode(message));
         if (debug) {
             System.out.println("Record: " + record);
@@ -115,8 +104,8 @@ public class BatchEndPoint {
         return record;
     }
 
-    private Message getMessageFromRequest(BatchAppendRequest request, String batchId) {
-        Message message = new Message();
+    private AcmeMessage getMessageFromRequest(BatchAppendRequest request, String batchId) {
+        AcmeMessage message = new AcmeMessage();
         message.setBatchId(batchId);
         message.setKey(request.getKey());
         message.setDuration(request.getDuration());
@@ -125,9 +114,9 @@ public class BatchEndPoint {
         return message;
     }
 
-    private Codec<Message> getMessageCodec() {
+    private Codec<AcmeMessage> getMessageCodec() {
         if (codec == null) {
-            codec = Framework.getService(CodecService.class).getCodec("avro", Message.class);
+            codec = Framework.getService(CodecService.class).getCodec("avro", AcmeMessage.class);
         }
         return codec;
     }

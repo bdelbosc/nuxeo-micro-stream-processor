@@ -13,6 +13,7 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.stream.StreamService;
 
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 
 @NuxeoHelidonTest
 @Deploy("OSGI-INF/stream-config.xml")
@@ -26,18 +27,26 @@ public class TestEndPoints extends AbstractWebServerTest {
     @Test
     public void iCanUseBatchEndPoint() {
         given().when().get("/batches/foo").then().statusCode(404);
-        given().contentType(ContentType.JSON)
-               .when()
-               .post("/batches")
-               .then()
-               .statusCode(200)
-               .body(containsString("created"));
+
+        JsonPath path = given().contentType(ContentType.JSON)
+                               .when()
+                               .post("/batches")
+                               .then()
+                               .statusCode(200)
+                               .body(containsString("created"))
+                               .extract()
+                               .body()
+                               .jsonPath();
+        String batchId = path.get("id");
+
+        given().when().get("/batches/" + batchId).then().statusCode(200)
+                .body(containsString(batchId));
 
         given().contentType(ContentType.JSON)
                .body("{\"key\": \"1234\"}")
                .queryParam("debug", "true")
                .when()
-               .post("/batches/batch-id/append")
+               .post("/batches/" + batchId + "/append")
                .then()
                .statusCode(200)
                .body(containsString("source"));

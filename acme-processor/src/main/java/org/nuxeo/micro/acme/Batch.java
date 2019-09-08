@@ -23,9 +23,9 @@ public class Batch {
 
     protected String status;
 
-    protected Integer processed;
+    protected int processed;
 
-    protected Integer total;
+    protected int total;
 
     public Batch() {
     }
@@ -46,19 +46,19 @@ public class Batch {
         this.status = status;
     }
 
-    public Integer getProcessed() {
+    public int getProcessed() {
         return processed;
     }
 
-    public void setProcessed(Integer processed) {
+    public void setProcessed(int processed) {
         this.processed = processed;
     }
 
-    public Integer getTotal() {
+    public int getTotal() {
         return total;
     }
 
-    public void setTotal(Integer total) {
+    public void setTotal(int total) {
         this.total = total;
     }
 

@@ -2,9 +2,12 @@
 <component name="org.nuxeo.micro.acme.processor.stream.contrib">
 
   <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
-    <streamProcessor name="myStreamProcessor" class="org.nuxeo.micro.acme.processor.AcmeProcessor" logConfig="default">
-      <computation name="myComputation" concurrency="4" />
+    <streamProcessor name="acmeProcessor" class="org.nuxeo.micro.acme.processor.AcmeProcessor" logConfig="default">
+      <computation name="acmeComputation" concurrency="4" />
+      <computation name="status" concurrency="1" />
       <stream name="source" partitions="20" codec="avro" />
+      <stream name="status" partitions="2" codec="avro" />
+      <stream name="done" partitions="1" codec="avro" />
     </streamProcessor>
   </extension>
 

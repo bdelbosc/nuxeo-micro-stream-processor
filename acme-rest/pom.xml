@@ -27,9 +27,5 @@
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.nuxeo.runtime</groupId>
-      <artifactId>nuxeo-runtime-kv</artifactId>
-    </dependency>
   </dependencies>
 </project>

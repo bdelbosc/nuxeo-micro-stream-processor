@@ -59,7 +59,7 @@ services:
       REDIS_PORT: 6379
       REDIS_PREFIX: "msp:"
     labels:
-      - "traefik.http.frontend.rule=Host:producer.docker.localhost"
+      - "traefik.http.frontend.rule=Host:acme.docker.localhost"
       - "traefik.http.port=8080"
       - "traefik.backend.healthcheck.path=/health"
       - "traefik.backend.healthcheck.port=8080"
