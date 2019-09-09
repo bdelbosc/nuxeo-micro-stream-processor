@@ -31,9 +31,9 @@ public class AcmeProcessor implements StreamProcessorTopology {
     @Override
     public Topology getTopology(Map<String, String> map) {
         return Topology.builder()
-                       .addComputation(() -> new AcmeComputation("acmeComputation"),
+                       .addComputation(() -> new AcmeComputation("acme"),
                                Arrays.asList(INPUT_1 + ":source", OUTPUT_1 + ":status"))
-                       .addComputation(() -> new CounterComputation("Counter"), Arrays.asList("i1:status", "o1:done"))
+                       .addComputation(() -> new CounterComputation("counter"), Arrays.asList("i1:status", "o1:done"))
                        .build();
     }
 

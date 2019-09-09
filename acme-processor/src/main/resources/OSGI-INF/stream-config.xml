@@ -3,8 +3,8 @@
 
   <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
     <streamProcessor name="acmeProcessor" class="org.nuxeo.micro.acme.processor.AcmeProcessor" logConfig="default">
-      <computation name="acmeComputation" concurrency="4" />
-      <computation name="status" concurrency="1" />
+      <computation name="acme" concurrency="${computation.acme}" />
+      <computation name="counter" concurrency="${computation.counter}" />
       <stream name="source" partitions="20" codec="avro" />
       <stream name="status" partitions="2" codec="avro" />
       <stream name="done" partitions="1" codec="avro" />

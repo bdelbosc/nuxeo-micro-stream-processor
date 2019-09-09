@@ -48,6 +48,7 @@ services:
     build:
       context: acme-rest
       dockerfile: src/main/docker/Dockerfile-JDK
+    restart: always
     depends_on:
       - kafka
       - redis
@@ -68,6 +69,7 @@ services:
     build:
       context: acme-processor
       dockerfile: src/main/docker/Dockerfile-JDK
+    restart: always
     depends_on:
       - kafka
       - rest
@@ -79,8 +81,34 @@ services:
       REDIS_HOST: "redis"
       REDIS_PORT: 6379
       REDIS_PREFIX: "msp:"
+      COMPUTATION_COUNTER: 0
+      COMPUTATION_ACME: 4
     labels:
       - "traefik.http.frontend.rule=Host:processor.docker.localhost"
+      - "traefik.http.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.port=8080"
+      - "traefik.backend.healthcheck.interval=10s"
+  instrument:
+    build:
+      context: acme-processor
+      dockerfile: src/main/docker/Dockerfile-JDK
+    restart: always
+    depends_on:
+      - kafka
+      - rest
+      - redis
+    environment:
+      KAFKA_ENABLED: "true"
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
+      COMPUTATION_COUNTER: 2
+      COMPUTATION_ACME: 0
+    labels:
+      - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
       - "traefik.http.port=8080"
       - "traefik.backend.healthcheck.path=/health"
       - "traefik.backend.healthcheck.port=8080"

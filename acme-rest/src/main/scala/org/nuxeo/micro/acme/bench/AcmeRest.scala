@@ -34,6 +34,6 @@ object AcmeRest {
       .check(status.in(200))
   }
 
-  
+
 
 }

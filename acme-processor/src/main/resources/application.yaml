@@ -12,3 +12,6 @@ redis:
   host: localhost
   prefix: "test:msp:"
 
+computation:
+  acme: 4
+  counter: 1
