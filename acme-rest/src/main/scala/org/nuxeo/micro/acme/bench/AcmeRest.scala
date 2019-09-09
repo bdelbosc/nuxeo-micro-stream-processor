@@ -25,13 +25,15 @@ object AcmeRest {
       .headers(Headers.base)
   }
 
-  def appendMessage(key: String, payload: String, duration: Int = 10) = {
+  def appendMessage() = {
     http("Append")
       .post("/batches/${batchId}/append")
       .headers(Headers.base)
       .header("Content-Type", "application/json")
-      .body(StringBody("""{ "key": """" + key + """","duration": """+ duration + """, "payload": """"+ payload + """"}"""))
+      .body(StringBody("""{ "key": "${key}","duration": ${duration}, "payload": "${payload}"}"""))
       .check(status.in(200))
   }
+
+  
 
 }

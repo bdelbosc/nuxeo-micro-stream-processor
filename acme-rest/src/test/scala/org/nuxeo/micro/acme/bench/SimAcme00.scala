@@ -27,10 +27,10 @@ import scala.io.Source
 
 object ScnAcme {
 
-  def get = (nbMessages: Integer, pause: Duration) => {
+  def get = (nbMessages: Integer, pause: Duration, messages: Iterator[Map[String, Any]]) => {
     scenario("Acme").exec(AcmeRest.createBatch(nbMessages)).exitHereIfFailed
       .repeat(nbMessages.intValue(), "count") {
-        exec(AcmeRest.appendMessage("1234", "content", 10)).pause(pause)
+        feed(messages).exec(AcmeRest.appendMessage()).pause(pause)
       }.exec(AcmeRest.getBatch())
   }
 }
@@ -41,7 +41,7 @@ class SimAcme00 extends Simulation {
     .disableWarmUp
     .acceptEncodingHeader("gzip, deflate")
     .connectionHeader("keep-alive")
-  val scn = ScnAcme.get(Parameters.getNbMessages(), Parameters.getPause())
+  val scn = ScnAcme.get(Parameters.getNbMessages(), Parameters.getPause(), Feeders.messages())
   setUp(scn.inject(atOnceUsers(Parameters.getConcurrentUsers()))).protocols(httpProtocol).exponentialPauses
     .assertions(global.successfulRequests.percent.is(100))
 }
