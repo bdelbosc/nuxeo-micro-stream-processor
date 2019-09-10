@@ -48,11 +48,11 @@ services:
     build:
       context: acme-rest
       dockerfile: src/main/docker/Dockerfile-JDK
-    container_name: rest
     restart: always
     depends_on:
       - kafka
       - redis
+      - graphite
     environment:
       KAFKA_ENABLED: "true"
       KAFKA_URL: "kafka:9092"
@@ -61,8 +61,10 @@ services:
       REDIS_PORT: 6379
       REDIS_PREFIX: "msp:"
       METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
       METRICS_GRAPHITE_HOST: "graphite"
       METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
       METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:acme.docker.localhost"
@@ -74,12 +76,12 @@ services:
     build:
       context: acme-processor
       dockerfile: src/main/docker/Dockerfile-JDK
-    container_name: processor
     restart: always
     depends_on:
       - kafka
       - rest
       - redis
+      - graphite
     environment:
       KAFKA_ENABLED: "true"
       KAFKA_URL: "kafka:9092"
@@ -90,8 +92,10 @@ services:
       COMPUTATION_COUNTER: 0
       COMPUTATION_ACME: 4
       METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
       METRICS_GRAPHITE_HOST: "graphite"
       METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
       METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:processor.docker.localhost"
@@ -108,6 +112,7 @@ services:
       - kafka
       - rest
       - redis
+      - graphite
     environment:
       KAFKA_ENABLED: "true"
       KAFKA_URL: "kafka:9092"
@@ -118,8 +123,10 @@ services:
       COMPUTATION_COUNTER: 2
       COMPUTATION_ACME: 0
       METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
       METRICS_GRAPHITE_HOST: "graphite"
       METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
       METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
