@@ -9,6 +9,7 @@
   <artifactId>nuxeo-micro</artifactId>
   <name>Nuxeo Micro</name>
   <description>Nuxeo Micro WebServer</description>
+  <dependencies></dependencies>
   <build>
     <plugins>
       <plugin>

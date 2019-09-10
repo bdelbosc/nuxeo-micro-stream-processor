@@ -33,6 +33,7 @@
     <servletapi.version>4.0.1</servletapi.version>
     <swagger.version>2.0.9</swagger.version>
     <restassured.version>4.1.1</restassured.version>
+    <metrics.version>4.0.3</metrics.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -48,6 +49,13 @@
         <groupId>org.nuxeo.ecm.platform</groupId>
         <artifactId>nuxeo-platform</artifactId>
         <version>${nuxeo.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.dropwizard.metrics</groupId>
+        <artifactId>metrics-bom</artifactId>
+        <version>${metrics.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>

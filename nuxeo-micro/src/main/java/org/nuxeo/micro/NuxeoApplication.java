@@ -94,6 +94,8 @@ public class NuxeoApplication {
             installBundle("org.nuxeo.runtime.kv");
             installBundle("org.nuxeo.runtime.redis");
             installBundle("org.nuxeo.ecm.core.redis");
+            installBundle("org.nuxeo.runtime.management");
+            installBundle("org.nuxeo.runtime.metrics");
 
             if (Boolean.parseBoolean(Framework.getProperty("kafka.enabled"))) {
                 installComponents("OSGI-INF/default-kafka-config.xml");

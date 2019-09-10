@@ -48,6 +48,7 @@ services:
     build:
       context: acme-rest
       dockerfile: src/main/docker/Dockerfile-JDK
+    container_name: rest
     restart: always
     depends_on:
       - kafka
@@ -59,6 +60,10 @@ services:
       REDIS_HOST: "redis"
       REDIS_PORT: 6379
       REDIS_PREFIX: "msp:"
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:acme.docker.localhost"
       - "traefik.http.port=8080"
@@ -69,6 +74,7 @@ services:
     build:
       context: acme-processor
       dockerfile: src/main/docker/Dockerfile-JDK
+    container_name: processor
     restart: always
     depends_on:
       - kafka
@@ -83,6 +89,10 @@ services:
       REDIS_PREFIX: "msp:"
       COMPUTATION_COUNTER: 0
       COMPUTATION_ACME: 4
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:processor.docker.localhost"
       - "traefik.http.port=8080"
@@ -107,12 +117,42 @@ services:
       REDIS_PREFIX: "msp:"
       COMPUTATION_COUNTER: 2
       COMPUTATION_ACME: 0
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
       - "traefik.http.port=8080"
       - "traefik.backend.healthcheck.path=/health"
       - "traefik.backend.healthcheck.port=8080"
       - "traefik.backend.healthcheck.interval=10s"
+  graphite:
+    build: graphite
+    image: mygraphite:latest
+    container_name: graphite
+    hostname: graphite
+    user: root
+    labels:
+      - "traefik.port=80"
+      - "traefik.frontend.rule=Host:graphite.docker.localhost"
+    volumes:
+      - ./data/graphite:/opt/graphite/storage/whisper:rw
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    hostname: grafana
+    user: root
+    labels:
+      - "traefik.port=3000"
+      - "traefik.frontend.rule=Host:grafana.docker.localhost"
+    links:
+      - graphite
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - ./grafana/provisioning/:/etc/grafana/provisioning/:rw
+      - ./data/grafana:/var/lib/grafana:rw
   traefik:
     image: traefik:latest
     command: --api --docker
