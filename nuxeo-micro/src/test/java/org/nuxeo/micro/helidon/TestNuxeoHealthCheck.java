@@ -23,7 +23,7 @@ public class TestNuxeoHealthCheck extends AbstractWebServerTest {
 
     @Test
     public void testHealthCheck() {
-        given().when().get("/health").then().statusCode(200).body("outcome", is("UP")).body("checks.size()", is(3));
+        given().when().get("/health").then().statusCode(200).body("outcome", is("UP")).body("checks.size()", is(4));
     }
 
     @Override

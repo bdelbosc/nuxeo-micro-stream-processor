@@ -69,6 +69,8 @@ public class NuxeoApplication {
 
     private SimpleRuntime runtime;
 
+    private boolean isUp;
+
     protected static URL[] introspectClasspath() {
         return new FastClasspathScanner().getUniqueClasspathElements().stream().map(file -> {
             try {
@@ -117,6 +119,7 @@ public class NuxeoApplication {
 
             start();
             log.info("Nuxeo Runtime initialized");
+            isUp = true;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -132,6 +135,7 @@ public class NuxeoApplication {
 
     public void onStop() {
         try {
+            isUp = false;
             log.info("The application is stopping...");
             shutdown();
         } catch (Exception e) {
@@ -296,6 +300,10 @@ public class NuxeoApplication {
                 log.error(message + ". Check the MANIFEST.MF");
             }
         }
+    }
+
+    public boolean isUp() {
+        return isUp;
     }
 
 }

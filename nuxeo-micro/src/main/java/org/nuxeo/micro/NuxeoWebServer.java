@@ -80,7 +80,7 @@ public interface NuxeoWebServer extends WebServer {
         }
 
         public WebServer create(ServerConfiguration configuration, Class<?>... resources) {
-            return WebServer.create(configuration, createRouting(resources));
+            return WebServer.create(configuration, createRouting(app, resources));
         }
 
         public CompletionStage<Void> start(Class<?>... resources) {
@@ -100,11 +100,12 @@ public interface NuxeoWebServer extends WebServer {
             });
         }
 
-        private static Routing createRouting(Class<?>... resources) {
+        private static Routing createRouting(NuxeoApplication app, Class<?>... resources) {
             MetricsSupport metrics = MetricsSupport.create();
             HealthSupport health = HealthSupport.builder()
                                                 .addLiveness(HealthChecks.healthChecks()) // Adds a convenient set of
                                                                                           // checks
+                                                .addReadiness(new NuxeoHealthCheck(app))
                                                 .build();
 
             JerseySupport.Builder jBuilder = JerseySupport.builder();

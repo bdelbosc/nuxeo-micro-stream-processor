@@ -18,9 +18,21 @@ import org.eclipse.microprofile.health.Liveness;
 @Liveness
 public class NuxeoHealthCheck implements HealthCheck {
 
+    private final NuxeoApplication app;
+
+    public NuxeoHealthCheck() {
+        this.app = null;
+    }
+
+    public NuxeoHealthCheck(NuxeoApplication app) {
+        this.app = app;
+    }
+
     @Override
     public HealthCheckResponse call() {
-        // TODO: check access to redis and stream services
-        return HealthCheckResponse.named("Health check nuxeo container").up().build();
+        if (app != null && app.isUp()) {
+            return HealthCheckResponse.named("nuxeoHealth").up().build();
+        }
+        return HealthCheckResponse.named("nuxeoHealth").down().build();
     }
 }
