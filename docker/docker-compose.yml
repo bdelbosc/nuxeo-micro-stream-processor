@@ -44,96 +44,6 @@ services:
       - kafka
     volumes:
       - ./kafkahq/kafkahq.conf:/app/application.conf:ro
-  rest:
-    build:
-      context: acme-rest
-      dockerfile: src/main/docker/Dockerfile-JDK
-    restart: always
-    depends_on:
-      - kafka
-      - redis
-      - graphite
-    environment:
-      KAFKA_ENABLED: "true"
-      KAFKA_URL: "kafka:9092"
-      KAFKA_PREFIX: "msp-"
-      REDIS_HOST: "redis"
-      REDIS_PORT: 6379
-      REDIS_PREFIX: "msp:"
-      METRICS_GRAPHITE_ENABLED: "true"
-      METRICS_LOG4J_ENABLED: "true"
-      METRICS_GRAPHITE_HOST: "graphite"
-      METRICS_GRAPHITE_PORT: 2003
-      METRICS.GRAPHITE.PERIOD: 30
-      METRICS.GRAPHITE.PERIOD: 30
-    labels:
-      - "traefik.http.frontend.rule=Host:acme.docker.localhost"
-      - "traefik.http.port=8080"
-      - "traefik.backend.healthcheck.path=/health"
-      - "traefik.backend.healthcheck.port=8080"
-      - "traefik.backend.healthcheck.interval=10s"
-  processor:
-    build:
-      context: acme-processor
-      dockerfile: src/main/docker/Dockerfile-JDK
-    restart: always
-    depends_on:
-      - kafka
-      - rest
-      - redis
-      - graphite
-    environment:
-      KAFKA_ENABLED: "true"
-      KAFKA_URL: "kafka:9092"
-      KAFKA_PREFIX: "msp-"
-      REDIS_HOST: "redis"
-      REDIS_PORT: 6379
-      REDIS_PREFIX: "msp:"
-      COMPUTATION_COUNTER: 0
-      COMPUTATION_ACME: 4
-      METRICS_GRAPHITE_ENABLED: "true"
-      METRICS_LOG4J_ENABLED: "true"
-      METRICS_GRAPHITE_HOST: "graphite"
-      METRICS_GRAPHITE_PORT: 2003
-      METRICS.GRAPHITE.PERIOD: 30
-      METRICS.GRAPHITE.PERIOD: 30
-    labels:
-      - "traefik.http.frontend.rule=Host:processor.docker.localhost"
-      - "traefik.http.port=8080"
-      - "traefik.backend.healthcheck.path=/health"
-      - "traefik.backend.healthcheck.port=8080"
-      - "traefik.backend.healthcheck.interval=10s"
-  instrument:
-    build:
-      context: acme-processor
-      dockerfile: src/main/docker/Dockerfile-JDK
-    restart: always
-    depends_on:
-      - kafka
-      - rest
-      - redis
-      - graphite
-    environment:
-      KAFKA_ENABLED: "true"
-      KAFKA_URL: "kafka:9092"
-      KAFKA_PREFIX: "msp-"
-      REDIS_HOST: "redis"
-      REDIS_PORT: 6379
-      REDIS_PREFIX: "msp:"
-      COMPUTATION_COUNTER: 2
-      COMPUTATION_ACME: 0
-      METRICS_GRAPHITE_ENABLED: "true"
-      METRICS_LOG4J_ENABLED: "true"
-      METRICS_GRAPHITE_HOST: "graphite"
-      METRICS_GRAPHITE_PORT: 2003
-      METRICS.GRAPHITE.PERIOD: 30
-      METRICS.GRAPHITE.PERIOD: 30
-    labels:
-      - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
-      - "traefik.http.port=8080"
-      - "traefik.backend.healthcheck.path=/health"
-      - "traefik.backend.healthcheck.port=8080"
-      - "traefik.backend.healthcheck.interval=10s"
   graphite:
     build: graphite
     image: mygraphite:latest
@@ -170,3 +80,87 @@ services:
       - "traefik.frontend.rule=Host:traefik.docker.localhost"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+  rest:
+    image: local/acme-rest:1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - kafka
+      - redis
+      - graphite
+    environment:
+      KAFKA_ENABLED: "true"
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
+      METRICS.GRAPHITE.PERIOD: 30
+    labels:
+      - "traefik.http.frontend.rule=Host:acme.docker.localhost"
+      - "traefik.http.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.port=8080"
+      - "traefik.backend.healthcheck.interval=10s"
+  processor:
+    image: local/acme-processor:1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - kafka
+      - rest
+      - redis
+      - graphite
+    environment:
+      KAFKA_ENABLED: "true"
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
+      COMPUTATION_COUNTER: 0
+      COMPUTATION_ACME: 4
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
+      METRICS.GRAPHITE.PERIOD: 30
+    labels:
+      - "traefik.http.frontend.rule=Host:processor.docker.localhost"
+      - "traefik.http.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.port=8080"
+      - "traefik.backend.healthcheck.interval=10s"
+  instrument:
+    image: local/acme-processor:1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - kafka
+      - rest
+      - redis
+      - graphite
+    environment:
+      KAFKA_ENABLED: "true"
+      KAFKA_URL: "kafka:9092"
+      KAFKA_PREFIX: "msp-"
+      REDIS_HOST: "redis"
+      REDIS_PORT: 6379
+      REDIS_PREFIX: "msp:"
+      COMPUTATION_COUNTER: 2
+      COMPUTATION_ACME: 0
+      METRICS_GRAPHITE_ENABLED: "true"
+      METRICS_LOG4J_ENABLED: "true"
+      METRICS_GRAPHITE_HOST: "graphite"
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
+      METRICS.GRAPHITE.PERIOD: 30
+    labels:
+      - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
+      - "traefik.http.port=8080"
+      - "traefik.backend.healthcheck.path=/health"
+      - "traefik.backend.healthcheck.port=8080"
+      - "traefik.backend.healthcheck.interval=10s"
