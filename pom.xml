@@ -9,6 +9,7 @@
     <module>nuxeo-micro</module>
     <module>acme-rest</module>
     <module>acme-processor</module>
+    <module>acme-simulation</module>
   </modules>
   <properties>
     <!-- Environment -->
