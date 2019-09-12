@@ -18,5 +18,5 @@ sudo rm -rf "$DATA_PATH/"
 { set +x; } 2>/dev/null
 { set +x; } 2>/dev/null
 echo "### -------------------------------------------------------------------"
-echo "### Docker compose data erased"
+echo -e "###\e[32m Docker compose data erased"
 

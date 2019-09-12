@@ -49,4 +49,4 @@ sleep ${NB}
 get_batch_info
 
 echo "### -------------------------------------------------------------------"
-echo "### Test done"
+echo -e "###\e[32m Test done"

@@ -6,4 +6,4 @@ cd ${SCRIPT_PATH}/../docker
 docker-compose down --volume
 { set +x; } 2>/dev/null
 echo "### -------------------------------------------------------------------"
-echo "### Docker compose down"
+echo -e "###\e[32m Docker compose down"
