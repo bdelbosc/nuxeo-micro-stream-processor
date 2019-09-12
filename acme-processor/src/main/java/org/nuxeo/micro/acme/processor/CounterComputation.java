@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.lib.stream.codec.Codec;
 import org.nuxeo.lib.stream.computation.AbstractBatchComputation;
 import org.nuxeo.lib.stream.computation.ComputationContext;
@@ -35,6 +37,9 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.codec.CodecService;
 
 public class CounterComputation extends AbstractBatchComputation {
+
+    private static final Logger log = LogManager.getLogger(AbstractBatchComputation.class);
+
     private Codec<Status> codecStatus;
 
     private BatchStorage batchStorage;
@@ -76,7 +81,7 @@ public class CounterComputation extends AbstractBatchComputation {
     private void updateBatch(ComputationContext context, String batchId, int processed) {
         Batch batch = getBatchStorage().get(batchId);
         if (batch == null) {
-            System.out.println("Unknown batch " + batchId);
+            log.warn("Try to update an unkown batch " + batchId);
             return;
         }
         batch.setProcessed(batch.getProcessed() + processed);
@@ -91,7 +96,7 @@ public class CounterComputation extends AbstractBatchComputation {
 
     @Override
     public void batchFailure(ComputationContext context, String stream, List<Record> records) {
-        System.out.println("batch failure");
+        log.error("Failure in processing counters records");
     }
 
 }

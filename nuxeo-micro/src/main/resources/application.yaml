@@ -11,4 +11,3 @@ redis:
   port: 6379
   host: localhost
   prefix: "test:msp:"
-

@@ -20,6 +20,8 @@ package org.nuxeo.micro.acme;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.kv.KeyValueService;
 import org.nuxeo.runtime.kv.KeyValueStore;
@@ -27,6 +29,8 @@ import org.nuxeo.runtime.kv.KeyValueStore;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class BatchStorage {
+    private static final Logger log = LogManager.getLogger(BatchStorage.class);
+
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private KeyValueStore keyValueStore;
@@ -43,7 +47,7 @@ public class BatchStorage {
         try {
             return OBJECT_MAPPER.readValue(json, Batch.class);
         } catch (IOException e) {
-            System.out.println("Cannot read json from" + json);
+            log.error("Cannot read JSON for batchId: " + batchId + " content: " + json);
             return null;
         }
     }

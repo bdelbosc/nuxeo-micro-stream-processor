@@ -6,13 +6,14 @@
     </Console>
   </Appenders>
   <Loggers>
-    <Logger name="org.nuxeo.lib.stream" level="info">
-      <AppenderRef ref="Console" />
-    </Logger>
-    <Logger name="org.nuxeo.runtime.stream" level="info">
-      <AppenderRef ref="Console" />
-    </Logger>
-    <Root level="trace">
+    <Logger name="io.helidon.webserver" level="warn" />
+    <Logger name="org.nuxeo" level="warn" />
+    <Logger name="org.nuxeo" level="warn" />
+
+    <Logger name="org.nuxeo.lib.stream" level="info" />
+    <Logger name="org.nuxeo.runtime.stream" level="info" />
+    <Logger name="org.nuxeo.micro" level="info" />
+    <Root level="info">
       <AppenderRef ref="Console" />
     </Root>
   </Loggers>

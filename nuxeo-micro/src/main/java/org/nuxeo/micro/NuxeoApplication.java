@@ -34,8 +34,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.common.Environment;
 import org.nuxeo.micro.helidon.HelidonEnvironment;
 import org.nuxeo.micro.helidon.HelidonRuntime;
@@ -53,7 +53,7 @@ import org.osgi.framework.Bundle;
 import io.github.lukehutch.fastclasspathscanner.FastClasspathScanner;
 
 public class NuxeoApplication {
-    private static final Log log = LogFactory.getLog(NuxeoApplication.class);
+    private static final Logger log = LogManager.getLogger(NuxeoApplication.class);
 
     protected Set<URI> readUris;
 
@@ -87,7 +87,7 @@ public class NuxeoApplication {
 
     public void onStart() {
         try {
-            log.info("Starting Nuxeo Runtime init...");
+            log.debug("Starting Nuxeo Runtime init...");
 
             // Manual install bundles
             installBundle("org.nuxeo.runtime.stream");
@@ -163,9 +163,9 @@ public class NuxeoApplication {
     }
 
     protected void initUrls() {
-        log.info("Start classpath scanning");
+        log.debug("Start classpath scanning");
         urls = introspectClasspath();
-        log.info("Stop classpath scanning");
+        log.debug("Stop classpath scanning");
         if (log.isDebugEnabled()) {
             log.debug("URLs on the classpath:\n" + Stream.of(urls).map(URL::toString).collect(joining("\n")));
         }
@@ -196,7 +196,6 @@ public class NuxeoApplication {
                 continue;
             }
             String symbolicName = readSymbolicName(bundleFile);
-            System.out.println(bundleFile + " " + symbolicName);
             if (symbolicName != null) {
                 log.debug(String.format("Bundle '%s' has URL %s", symbolicName, url));
                 bundles.put(symbolicName, bundleFile);

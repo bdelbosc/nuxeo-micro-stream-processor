@@ -14,6 +14,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.lib.stream.codec.Codec;
 import org.nuxeo.lib.stream.computation.Record;
 import org.nuxeo.lib.stream.computation.StreamManager;
@@ -42,6 +44,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 @OpenAPIDefinition(info = @Info(title = "Batch End Point", version = "1.0", description = "ACME Batch endpoint", contact = @Contact(url = "https://nuxeo.com")))
 @Path("/batches")
 public class BatchEndPoint {
+    private static final Logger log = LogManager.getLogger(BatchEndPoint.class);
+
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private Codec<AcmeMessage> codec;
@@ -88,18 +92,18 @@ public class BatchEndPoint {
     @Path("{id: [a-zA-Z_0-9\\-]+}/append")
     public Response appendToBatch(String json, @PathParam("id") String id,
             @QueryParam("debug") @DefaultValue("false") String debugStr) throws IOException {
-        boolean debug = "true".equals(debugStr);
-        BatchAppendRequest request = getRequest(json, debug);
-        Record record = getRecord(request, id, debug);
-        BatchAppendResponse response = appendToStream("source", record, debug);
+        boolean verbose = "true".equals(debugStr);
+        BatchAppendRequest request = getRequest(json, verbose);
+        Record record = getRecord(request, id, verbose);
+        BatchAppendResponse response = appendToStream("source", record, verbose);
         return Response.ok().entity(response.toString()).build();
     }
 
-    protected Record getRecord(BatchAppendRequest request, String batchId, boolean debug) {
+    protected Record getRecord(BatchAppendRequest request, String batchId, boolean verbose) {
         AcmeMessage message = getMessageFromRequest(request, batchId);
         Record record = Record.of(request.getKey(), getMessageCodec().encode(message));
-        if (debug) {
-            System.out.println("Record: " + record);
+        if (verbose) {
+            log.info("Record: " + record);
         }
         return record;
     }
@@ -121,21 +125,21 @@ public class BatchEndPoint {
         return codec;
     }
 
-    protected BatchAppendRequest getRequest(String json, boolean debug) throws IOException {
+    protected BatchAppendRequest getRequest(String json, boolean verbose) throws IOException {
         BatchAppendRequest request = OBJECT_MAPPER.readValue(json, BatchAppendRequest.class);
-        if (debug) {
-            System.out.println("Request: " + request);
+        if (verbose) {
+            log.info("Request: " + request);
         }
         return request;
     }
 
-    protected BatchAppendResponse appendToStream(String stream, Record record, boolean debug) {
+    protected BatchAppendResponse appendToStream(String stream, Record record, boolean verbose) {
         StreamService streamService = Framework.getService(StreamService.class);
         StreamManager manager = streamService.getStreamManager("default");
         LogOffset offset = manager.append(stream, record);
         BatchAppendResponse response = new BatchAppendResponse(offset);
-        if (debug) {
-            System.out.println("Response: " + response);
+        if (verbose) {
+            log.info("Response: " + response);
         }
         return response;
     }

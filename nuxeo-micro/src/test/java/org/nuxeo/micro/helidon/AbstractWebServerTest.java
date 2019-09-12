@@ -15,8 +15,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.nuxeo.micro.NuxeoWebServer;
@@ -31,7 +31,7 @@ public abstract class AbstractWebServerTest {
 
     protected static final int RETRIES = 1000;
 
-    private static final Log log = LogFactory.getLog(AbstractWebServerTest.class);
+    private static final Logger log = LogManager.getLogger(AbstractWebServerTest.class);
 
     @BeforeEach
     public void beforeEach() throws ExecutionException, InterruptedException, TimeoutException {

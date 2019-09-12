@@ -3,8 +3,8 @@ package org.nuxeo.micro;
 import java.util.Arrays;
 import java.util.concurrent.CompletionStage;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.micro.helidon.Properties;
 
 import io.helidon.config.Config;
@@ -38,8 +38,7 @@ public interface NuxeoWebServer extends WebServer {
     }
 
     final class Builder {
-
-        private static final Log log = LogFactory.getLog(NuxeoWebServer.Builder.class);
+        private static final Logger log = LogManager.getLogger(NuxeoWebServer.Builder.class);
 
         protected final NuxeoApplication app;
 

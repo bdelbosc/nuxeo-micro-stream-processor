@@ -6,6 +6,10 @@
     </Console>
   </Appenders>
   <Loggers>
+    <Logger name="io.helidon.webserver" level="warn" />
+    <Logger name="org.nuxeo" level="warn" />
+    <Logger name="org.nuxeo" level="warn" />
+    <Logger name="org.nuxeo.micro" level="info" />
     <Root level="INFO">
       <AppenderRef ref="Console" />
     </Root>
