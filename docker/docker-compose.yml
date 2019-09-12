@@ -164,3 +164,22 @@ services:
       - "traefik.backend.healthcheck.path=/health"
       - "traefik.backend.healthcheck.port=8080"
       - "traefik.backend.healthcheck.interval=10s"
+  stream-sh:
+    image: local/stream-sh:1.0-SNAPSHOT
+    restart: always
+    depends_on:
+      - kafka
+      - rest
+      - redis
+      - graphite
+      - processor
+    ports:
+      - 8787:8787
+    environment:
+      METRICS_GRAPHITE_PORT: 2003
+      METRICS.GRAPHITE.PERIOD: 30
+      METRICS.GRAPHITE.PERIOD: 30
+    # command: lag -k --kafka /kafka-config.xml
+    command: monitor -k --kafka /kafka-config.xml --codec avro -l ALL -i 30 --host graphite --port 2003 --verbose
+    volumes:
+      - ./stream-sh/kafka-config.xml:/kafka-config.xml:ro
