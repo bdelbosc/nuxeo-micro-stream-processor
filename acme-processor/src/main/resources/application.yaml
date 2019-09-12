@@ -13,5 +13,10 @@ redis:
   prefix: "test:msp:"
 
 computation:
-  acme: 4
-  counter: 1
+  acme:
+    concurrency: 4
+  counter:
+    concurrency: 1
+    batch:
+      capacity: 10
+      threshold: "500ms"

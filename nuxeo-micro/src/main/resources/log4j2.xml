@@ -10,7 +10,7 @@
     <Logger name="org.nuxeo" level="warn" />
     <Logger name="org.nuxeo" level="warn" />
     <Logger name="org.nuxeo.micro" level="trace" />
-    <Root level="TRACE">
+    <Root level="INFO">
       <AppenderRef ref="Console" />
     </Root>
   </Loggers>

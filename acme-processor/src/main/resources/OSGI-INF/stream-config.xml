@@ -3,11 +3,14 @@
 
   <extension point="streamProcessor" target="org.nuxeo.runtime.stream.service">
     <streamProcessor name="acmeProcessor" class="org.nuxeo.micro.acme.processor.AcmeProcessor" logConfig="default">
-      <computation name="acme" concurrency="${computation.acme}" />
-      <computation name="counter" concurrency="${computation.counter}" />
       <stream name="source" partitions="20" codec="avro" />
       <stream name="status" partitions="2" codec="avro" />
       <stream name="done" partitions="1" codec="avro" />
+      <computation name="acme" concurrency="${computation.acme.concurrency}" />
+      <computation name="counter" concurrency="${computation.counter.concurrency}" />
+      <policy name="counter" batchCapacity="${computation.counter.batch.capacity}"
+        batchThreshold="${computation.counter.batch.threshold}" maxRetries="3" delay="1s" maxDelay="60s"
+        continueOnFailure="false" />
     </streamProcessor>
   </extension>
 
