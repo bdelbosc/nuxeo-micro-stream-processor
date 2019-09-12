@@ -18,6 +18,8 @@
  */
 package org.nuxeo.micro.acme.processor;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nuxeo.lib.stream.codec.Codec;
 import org.nuxeo.lib.stream.computation.AbstractComputation;
 import org.nuxeo.lib.stream.computation.ComputationContext;
@@ -28,6 +30,8 @@ import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.codec.CodecService;
 
 class AcmeComputation extends AbstractComputation {
+    private static final Logger log = LogManager.getLogger(AcmeComputation.class);
+
     private Codec<AcmeMessage> codec;
 
     private Codec<Status> codecStatus;
@@ -53,21 +57,24 @@ class AcmeComputation extends AbstractComputation {
     @Override
     public void processRecord(ComputationContext context, String streamName, Record record) {
         AcmeMessage message = getMessageCodec().decode(record.getData());
-        if (message.getDuration() != null && message.getDuration() > 0) {
-            simulateWorkDuration(message.getDuration());
-        }
-
+        simulateProcessing(message);
         Status status = new Status(message.getBatchId(), 1);
         context.produceRecord(OUTPUT_1, Record.of(message.getBatchId(), getStatusCodec().encode(status)));
         context.askForCheckpoint();
     }
 
-    private void simulateWorkDuration(Integer duration) {
-        try {
-            Thread.sleep(duration);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted", e);
+    private void simulateProcessing(AcmeMessage message) {
+        if (log.isDebugEnabled()) {
+            log.debug("Start processing: " + message);
+        }
+        if (message.getDuration() != null && message.getDuration() > 0) {
+            try {
+                Thread.sleep(message.getDuration());
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new RuntimeException("Interrupted", e);
+            }
         }
     }
+
 }

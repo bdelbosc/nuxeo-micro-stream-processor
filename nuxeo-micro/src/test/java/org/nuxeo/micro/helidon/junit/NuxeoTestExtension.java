@@ -18,8 +18,8 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.nuxeo.common.Environment;
-import org.nuxeo.micro.helidon.HelidonEnvironment;
 import org.nuxeo.micro.NuxeoApplication;
+import org.nuxeo.micro.helidon.HelidonEnvironment;
 import org.nuxeo.runtime.api.Framework;
 
 public class NuxeoTestExtension implements BeforeAllCallback, BeforeEachCallback, AfterEachCallback, AfterAllCallback {

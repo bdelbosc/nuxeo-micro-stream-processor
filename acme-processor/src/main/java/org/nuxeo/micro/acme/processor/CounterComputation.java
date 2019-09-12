@@ -38,7 +38,7 @@ import org.nuxeo.runtime.codec.CodecService;
 
 public class CounterComputation extends AbstractBatchComputation {
 
-    private static final Logger log = LogManager.getLogger(AbstractBatchComputation.class);
+    private static final Logger log = LogManager.getLogger(CounterComputation.class);
 
     private Codec<Status> codecStatus;
 
@@ -90,6 +90,9 @@ public class CounterComputation extends AbstractBatchComputation {
             context.produceRecord(OUTPUT_1, Record.of(batchId, batch.toString().getBytes(UTF_8)));
         } else {
             batch.setStatus("processing");
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("Update batch: " + batch);
         }
         getBatchStorage().save(batch);
     }

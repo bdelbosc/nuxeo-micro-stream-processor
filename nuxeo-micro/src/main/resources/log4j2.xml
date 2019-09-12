@@ -9,8 +9,8 @@
     <Logger name="io.helidon.webserver" level="warn" />
     <Logger name="org.nuxeo" level="warn" />
     <Logger name="org.nuxeo" level="warn" />
-    <Logger name="org.nuxeo.micro" level="info" />
-    <Root level="INFO">
+    <Logger name="org.nuxeo.micro" level="trace" />
+    <Root level="TRACE">
       <AppenderRef ref="Console" />
     </Root>
   </Loggers>
