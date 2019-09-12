@@ -180,6 +180,6 @@ services:
       METRICS.GRAPHITE.PERIOD: 30
       METRICS.GRAPHITE.PERIOD: 30
     # command: lag -k --kafka /kafka-config.xml
-    command: monitor -k --kafka /kafka-config.xml --codec avro -l ALL -i 30 --host graphite --port 2003 --verbose
+    command: monitor -k --kafka /kafka-config.xml --codec avro -l ALL -i 30 --host graphite --port 2003
     volumes:
       - ./stream-sh/kafka-config.xml:/kafka-config.xml:ro

@@ -7,5 +7,5 @@ cd $ROOT_PATH/acme-rest
 mvn -nsu test gatling:test -Pbench -DnbMessages=10000
 { set +x; } 2>/dev/null
 echo "### -------------------------------------------------------------------"
-echo "### Benchmark Done"
+echo -e "###\e[32m Benchmark Done"
 find $ROOT_PATH/acme-rest/target/gatling -name index.html | sort -r | head -1
