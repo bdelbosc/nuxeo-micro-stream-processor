@@ -12,6 +12,7 @@ npm-debug.log
 *.ipr
 *.iws
 *.log
+*.jfr
 .metadata
 .mylar
 *.orig
