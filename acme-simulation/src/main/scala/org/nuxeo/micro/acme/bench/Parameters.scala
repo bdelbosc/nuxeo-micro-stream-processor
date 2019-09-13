@@ -13,7 +13,7 @@ object Parameters {
   }
 
   def getPause(defaultMs: Integer = 0, prefix: String = ""): Duration = {
-    val pauseMs: Long = 0L + Integer.getInteger(prefix + "pause_ms", defaultMs)
+    val pauseMs: Long = 0L + Integer.getInteger(prefix + "pauseMs", defaultMs)
     Duration(pauseMs, "millisecond")
   }
 
@@ -31,5 +31,8 @@ object Parameters {
     Integer.getInteger("nbMessages", default)
   }
 
+  def getWorkDuration(default: Integer = 200, prefix: String = ""): Integer = {
+    Integer.getInteger(prefix + "workDurationMs", default)
+  }
 
 }

@@ -21,7 +21,7 @@ services:
       #KAFKA_BROKER_ID: 1
       KAFKA_PORT: 9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 10
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 1000
       KAFKA_OFFSETS_RETENTION_MINUTES: 20160
       KAFKA_HEAP_OPTS: "-Xmx256M -Xms256M"
       KAFKA_LOG_DIRS: /kafka/log
@@ -31,7 +31,7 @@ services:
       - zookeeper
     volumes:
       - ./data/kafka/data:/kafka:rw
-      - ./data/kafka/log:/kafka/log:rw
+      - ./data/kafka/log:/opt/kafka/logs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
   kafkahq:
     image: tchiotludo/kafkahq
@@ -128,7 +128,6 @@ services:
       METRICS_GRAPHITE_HOST: "graphite"
       METRICS_GRAPHITE_PORT: 2003
       METRICS.GRAPHITE.PERIOD: 30
-      METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:processor.docker.localhost"
       - "traefik.http.port=8080"
@@ -159,7 +158,6 @@ services:
       METRICS_GRAPHITE_HOST: "graphite"
       METRICS_GRAPHITE_PORT: 2003
       METRICS.GRAPHITE.PERIOD: 30
-      METRICS.GRAPHITE.PERIOD: 30
     labels:
       - "traefik.http.frontend.rule=Host:instrument.docker.localhost"
       - "traefik.http.port=8080"
@@ -177,7 +175,6 @@ services:
       - processor
     environment:
       METRICS_GRAPHITE_PORT: 2003
-      METRICS.GRAPHITE.PERIOD: 30
       METRICS.GRAPHITE.PERIOD: 30
     # command: lag -k --kafka /kafka-config.xml
     command: monitor -k --kafka /kafka-config.xml --codec avro -l ALL -i 30 --host graphite --port 2003
