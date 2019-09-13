@@ -175,8 +175,6 @@ services:
       - redis
       - graphite
       - processor
-    ports:
-      - 8787:8787
     environment:
       METRICS_GRAPHITE_PORT: 2003
       METRICS.GRAPHITE.PERIOD: 30
