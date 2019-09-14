@@ -89,11 +89,13 @@ public class NuxeoApplication {
         try {
             log.debug("Starting Nuxeo Runtime init...");
 
-            // Manual install bundles
+            // streams
             installBundle("org.nuxeo.runtime.stream");
+            // kv
             installBundle("org.nuxeo.runtime.kv");
             installBundle("org.nuxeo.runtime.redis");
             installBundle("org.nuxeo.ecm.core.redis");
+            // metrics
             installBundle("org.nuxeo.runtime.management");
             installBundle("org.nuxeo.runtime.metrics");
 

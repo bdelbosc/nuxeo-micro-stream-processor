@@ -9,6 +9,7 @@
 package org.nuxeo.micro.helidon;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,7 @@ public class TestNuxeoHealthCheck extends AbstractWebServerTest {
 
     @Test
     public void testHealthCheck() {
+        // given().when().get("/health").then().statusCode(200).body(containsString("foo"));
         given().when().get("/health").then().statusCode(200).body("outcome", is("UP")).body("checks.size()", is(4));
     }
 
